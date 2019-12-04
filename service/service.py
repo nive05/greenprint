@@ -243,7 +243,7 @@ def initialize_logging(log_level=logging.INFO):
 # RETRIEVE AN ORDER BASED ON OWNER
 ######################################################################
 
-@app.route('/accounts/owners/<str:owner>', methods=['GET'])
+@app.route('/accounts/owner/<str:owner>', methods=['GET'])
 def get_orders_owner(owner):
     """
     Retrieve an account

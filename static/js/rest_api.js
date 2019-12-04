@@ -6,27 +6,27 @@ $(function () {
 
     // Updates the form with data from the response
     function update_form_data(res) {
-        $("#order_id").val(res.id);
-        $("#order_uuid").val(res.uuid);
-        $("#order_price").val(res.price);
-        $("#order_quantity").val(res.quantity);
-        $("#order_customer_id").val(res.customer_id);
-        $("#order_product_id").val(res.product_id);
+        $("#accountid").val(res.id);
+        $("#owner").val(res.owner);
+        $("#account_id").val(res.account_id);
+        $("#account_type").val(res.account_type);
+        $("#institution_id").val(res.institution_id);
+        $("#balance").val(res.balance);
         //if (res.status == false) {
         //    $("#order_status").val("In Progress");
         //} {
-        $("#order_status").val(res.status);
+       // $("#isHidden").val(res.isHidden);
         //}
     }
 
     /// Clears all form fields
     function clear_form_data() {
-        $("#order_uuid").val("");
-        $("#order_price").val("");
-        $("#order_quantity").val("");
-        $("#order_customer_id").val("");
-        $("#order_product_id").val("");
-        $("#order_status").val("");
+        $("#accountid").val("");
+        $("#owner").val("");
+        $("#account_id").val("");
+        $("#account_type").val("");
+        $("#institution_id").val("");
+        $("#balance").val("");
     }
 
     // Updates the flash message area
@@ -44,30 +44,30 @@ $(function () {
     }
 
     // ****************************************
-    // Create an Order
+    // Create an Account
     // ****************************************
 
     $("#create-btn").click(function () {
 
-        var uuid = $("#order_uuid").val();
-        var price = $("#order_price").val();
-        var quantity = $("#order_quantity").val();
-        var customer_id = $("#order_customer_id").val();
-        var product_id = $("#order_product_id").val();
-        var status = $("#order_status").val();
+        var id = $("#accountid").val();
+        var owner = $("#owner").val();
+        var account_id = $("#account_id").val();
+        var account_type = $("#account_type").val();
+        var institution_id = $("#institution_id").val();
+        var balance = $("#balance").val();
 
         var data = {
-            "uuid": uuid,
-            "price": price,
-            "quantity": quantity,
-            "customer_id": customer_id,
-            "product_id": product_id,
-            "status": status
+            "accountid": accountid,
+            "owner": owner,
+            "account_id": account_id,
+            "account_type": account_type,
+            "institution_id": institution_id,
+            "balance": balance
         };
 
         var ajax = $.ajax({
             type: "POST",
-            url: "/orders",
+            url: "/accounts",
             contentType: "application/json",
             data: JSON.stringify(data),
         });

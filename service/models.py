@@ -72,7 +72,7 @@ class account(db.Model):
 
     def serialize(self):
         """ Serializes an Account into a dictionary """
-        return {"id": self.id,
+        return {"accountid": self.id,
                 "owner": self.owner,
                 "account_id": self.account_id,
                 "account_type": self.account_type,
@@ -118,16 +118,16 @@ class account(db.Model):
         return cls.query.all()
 
     @classmethod
-    def find(cls, account_id):
+    def find(cls, accountid):
         """ Finds an account it's ID """
-        cls.logger.info('Processing lookup for id %s ...', account_id)
-        return cls.query.get(account_id)
+        cls.logger.info('Processing lookup for id %s ...', accountid)
+        return cls.query.get(accountid)
 
     @classmethod
-    def find_or_404(cls, pet_id):
+    def find_or_404(cls, accountid):
         """ Find a Pet by it's account """
-        cls.logger.info('Processing lookup or 404 for id %s ...', account_id)
-        return cls.query.get_or_404(account_id)
+        cls.logger.info('Processing lookup or 404 for id %s ...', accountid)
+        return cls.query.get_or_404(accountid)
 
     @classmethod
     def find_by_owner(cls, owner):
