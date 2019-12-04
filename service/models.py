@@ -1,28 +1,23 @@
-# Copyright 2016, 2019 John Rofrano. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the 'License');
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an 'AS IS' BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 
 """
-Models for Pet Demo Service
-
-All of the models are stored in this module
+Models for Greenprint Account Linking Service
 
 Models
 ------
-Pet - A Pet used in the Pet Store
+Account 
 
 Attributes:
 -----------
+id (int) - unique id for user
+owner (string) - name of owner
+account_id (int) - unique id for account
+account_type (string) - bank / credit_card / investment / loan / other
+institution_id (int) - will map institution id to a unique institution name using a table
+balance (float) - current balance in account
+isHidden (boolean) - True for accounts that are active
+
+
 name (string) - the name of the pet
 category (string) - the category the pet belongs to (i.e., dog, cat)
 available (boolean) - True for pets that are available for adoption
@@ -38,9 +33,9 @@ class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
 
-class Pet(db.Model):
+class account(db.Model):
     """
-    Class that represents a Pet
+    Class that represents an Account
 
     This version uses a relational database for persistence which is hidden
     from us by SQLAlchemy's object relational mappings (ORM)
@@ -50,50 +45,59 @@ class Pet(db.Model):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63))
-    category = db.Column(db.String(63))
-    available = db.Column(db.Boolean())
+    owner = db.Column(db.String(63))
+    account_id = db.Column(db.Integer, primary_key=True)
+    account_type = db.Column(db.String(63))
+    institution_id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float, primary_key=True)
+    isHidden = db.Column(db.Boolean())
 
     def __repr__(self):
-        return '<Pet %r>' % (self.name)
+        return '<Account %r>' % (self.name)
 
     def save(self):
         """
-        Saves a Pet to the data store
+        Saves an Account to the data store
         """
-        Pet.logger.info('Saving %s', self.name)
+        Account.logger.info('Saving %s', self.name)
         if not self.id:
             db.session.add(self)
         db.session.commit()
 
     def delete(self):
-        """ Removes a Pet from the data store """
-        Pet.logger.info('Deleting %s', self.name)
+        """ Removes an Account from the data store """
+        Account.logger.info('Deleting %s', self.name)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a Pet into a dictionary """
+        """ Serializes an Account into a dictionary """
         return {"id": self.id,
-                "name": self.name,
-                "category": self.category,
-                "available": self.available}
+                "owner": self.owner,
+                "account_id": self.account_id,
+                "account_type": self.account_type,
+                "institution_id": self.institution_id,
+                "balance": self.balance,
+                "isHidden":self.isHidden}
 
     def deserialize(self, data):
         """
-        Deserializes a Pet from a dictionary
+        Deserializes an Account from a dictionary
 
         Args:
-            data (dict): A dictionary containing the Pet data
+            data (dict): A dictionary containing the Account data
         """
         try:
-            self.name = data['name']
-            self.category = data['category']
-            self.available = data['available']
+            self.owner = data['owner']
+            self.account_id = data['account_id']
+            self.account_type = data['account_type']
+            self.institution_id = data['institution_id']
+            self.balance = data['balance']
+            self.isHidden = data['isHidden']
         except KeyError as error:
-            raise DataValidationError('Invalid pet: missing ' + error.args[0])
+            raise DataValidationError('Invalid account: missing ' + error.args[0])
         except TypeError as error:
-            raise DataValidationError('Invalid pet: body of request contained' \
+            raise DataValidationError('Invalid account: body of request contained' \
                                       'bad or no data')
         return self
 
@@ -109,49 +113,83 @@ class Pet(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the Pets in the database """
-        cls.logger.info('Processing all Pets')
+        """ Returns all of the Accounts in the database """
+        cls.logger.info('Processing all Accounts')
         return cls.query.all()
 
     @classmethod
-    def find(cls, pet_id):
-        """ Finds a Pet by it's ID """
-        cls.logger.info('Processing lookup for id %s ...', pet_id)
-        return cls.query.get(pet_id)
+    def find(cls, account_id):
+        """ Finds an account it's ID """
+        cls.logger.info('Processing lookup for id %s ...', account_id)
+        return cls.query.get(account_id)
 
     @classmethod
     def find_or_404(cls, pet_id):
-        """ Find a Pet by it's id """
-        cls.logger.info('Processing lookup or 404 for id %s ...', pet_id)
-        return cls.query.get_or_404(pet_id)
+        """ Find a Pet by it's account """
+        cls.logger.info('Processing lookup or 404 for id %s ...', account_id)
+        return cls.query.get_or_404(account_id)
 
     @classmethod
-    def find_by_name(cls, name):
-        """ Returns all Pets with the given name
+    def find_by_owner(cls, owner):
+        """ Returns all Accounts with the given owner
 
         Args:
-            name (string): the name of the Pets you want to match
+            owner (string): the name of the accounts you want to match
         """
-        cls.logger.info('Processing name query for %s ...', name)
-        return cls.query.filter(cls.name == name)
+        cls.logger.info('Processing owner query for %s ...', owner)
+        return cls.query.filter(cls.owner == owner)
 
     @classmethod
-    def find_by_category(cls, category):
-        """ Returns all of the Pets in a category
+    def find_by_account_id(cls, account_id):
+        """ Returns all of the accounts with the same id
 
         Args:
-            category (string): the category of the Pets you want to match
+            account_id (int): the account id of the accounts you want to match
         """
-        cls.logger.info('Processing category query for %s ...', category)
-        return cls.query.filter(cls.category == category)
+        cls.logger.info('Processing account id query for %s ...', account_id)
+        return cls.query.filter(cls.account_id == account_id)
+
 
     @classmethod
-    def find_by_availability(cls, available=True):
-        """ Query that finds Pets by their availability """
-        """ Returns all Pets by their availability
+    def find_by_account_type(cls, account_type):
+        """ Returns all of the accounts of a type
 
         Args:
-            available (boolean): True for pets that are available
+            account_type (string): the account type you want to match
         """
-        cls.logger.info('Processing available query for %s ...', available)
-        return cls.query.filter(cls.available == available)
+        cls.logger.info('Processing account type query for %s ...', account_type)
+        return cls.query.filter(cls.account_type == account_type)
+
+
+    @classmethod
+    def find_by_institution_id(cls, institution_id):
+        """ Returns all of the accounts with the same institution id
+
+        Args:
+            institution_id (int): the institution id of the accounts you want to match
+        """
+        cls.logger.info('Processing institution id query for %s ...', institution_id)
+        return cls.query.filter(cls.institution_id == institution_id)
+
+
+    @classmethod
+    def find_by_balance(cls, balance):
+        """ Returns all of the accounts with the same balance
+
+        Args:
+            balance (int): the balance of the accounts you want to match
+        """
+        cls.logger.info('Processing balance query for %s ...', balance)
+        return cls.query.filter(cls.balance == balance)
+
+
+    @classmethod
+    def find_by_isHidden(cls, isHidden=True):
+        """ Query that finds active accounts """
+        """ Returns all active accounts 
+
+        Args:
+            isHidden (boolean): True for accounts that are active
+        """
+        cls.logger.info('Processing available query for %s ...', isHidden)
+        return cls.query.filter(cls.isHidden == isHidden)

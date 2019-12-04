@@ -1,27 +1,18 @@
-# Copyright 2016, 2019 John J. Rofrano. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
-Pet Store Service
+Accounts Service
 
 Paths:
 ------
-GET /pets - Returns a list all of the Pets
-GET /pets/{id} - Returns the Pet with a given id number
-POST /pets - creates a new Pet record in the database
-PUT /pets/{id} - updates a Pet record in the database
-DELETE /pets/{id} - deletes a Pet record in the database
+GET /accounts - Returns a list all of the accounts
+GET /accounts/{id} - Returns the account with a given id number
+POST /accounts - creates a new account record in the database
+PUT /accounts/{id} - updates an account record in the database
+DELETE /accounts/{id} - deletes an account record in the database
+GET /accounts/{owner} - Returns the accounts with a given owner
+GET /accounts/{account_id} - Returns the accounts with a given account id number
+GET /accounts/{account_type} - Returns the accounts with a given account type
+GET /accounts/{institution_id} - Returns the accounts with a given institution id number
+GET /accounts/{balance} - Returns the accounts with a given balance
 """
 
 import os
@@ -34,7 +25,7 @@ from werkzeug.exceptions import NotFound
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import Pet, DataValidationError
+from service.models import account, DataValidationError
 
 # Import Flask application
 from . import app
@@ -99,65 +90,75 @@ def internal_server_error(error):
 @app.route('/')
 def index():
     """ Root URL response """
-    return jsonify(name='Pet Demo REST API Service',
+    return jsonify(name='Account Demo REST API Service',
                    version='1.0',
-                   paths=url_for('list_pets', _external=True)
+                   paths=url_for('list_accounts', _external=True)
                   ), status.HTTP_200_OK
 
 ######################################################################
 # LIST ALL PETS
 ######################################################################
-@app.route('/pets', methods=['GET'])
+@app.route('/accounts', methods=['GET'])
 def list_pets():
-    """ Returns all of the Pets """
-    app.logger.info('Request for pet list')
-    pets = []
-    category = request.args.get('category')
-    name = request.args.get('name')
-    if category:
-        pets = Pet.find_by_category(category)
-    elif name:
-        pets = Pet.find_by_name(name)
-    else:
-        pets = Pet.all()
+    """ Returns all of the accounts """
+    app.logger.info('Request for account list')
+    accounts = []
+    account_id = request.args.get('account_id')
+    owner = request.args.get('owner')
+    account_type = request.args.get('account_type')
+    institution_id = request.args.get('institution_id')
+    balance = request.args.get('balance')
 
-    results = [pet.serialize() for pet in pets]
+    if account_id:
+        accounts = account.find_by_account_id(account_id)
+    elif owner:
+        accounts = account.find_by_owner(owner)
+    elif account_type:
+        accounts = account.find_by_account_type(account_type)
+    elif institution_id:
+        accounts = account.find_by_institution_id(institution_id)
+    elif balance:
+        accounts = account.find_by_balance(balance)
+    else:
+        accounts = account.all()
+
+    results = [account.serialize() for account in accounts]
     return make_response(jsonify(results), status.HTTP_200_OK)
 
 
 ######################################################################
-# RETRIEVE A PET
+# RETRIEVE AN ACCOUNT BY ID
 ######################################################################
-@app.route('/pets/<int:pet_id>', methods=['GET'])
-def get_pets(pet_id):
+@app.route('/account/<int:accountid>', methods=['GET'])
+def get_accounts(accountid):
     """
-    Retrieve a single Pet
+    Retrieve a single account
 
-    This endpoint will return a Pet based on it's id
+    This endpoint will return a account based on it's account id
     """
-    app.logger.info('Request for pet with id: %s', pet_id)
-    pet = Pet.find(pet_id)
-    if not pet:
-        raise NotFound("Pet with id '{}' was not found.".format(pet_id))
-    return make_response(jsonify(pet.serialize()), status.HTTP_200_OK)
+    app.logger.info('Request for account with id: %s', accountid)
+    account = account.find(accountid)
+    if not account:
+        raise NotFound("Account with id '{}' was not found.".format(accountid))
+    return make_response(jsonify(account.serialize()), status.HTTP_200_OK)
 
 
 ######################################################################
-# ADD A NEW PET
+# ADD A NEW ACCOUNT
 ######################################################################
-@app.route('/pets', methods=['POST'])
-def create_pets():
+@app.route('/accounts', methods=['POST'])
+def create_accounts():
     """
-    Creates a Pet
-    This endpoint will create a Pet based the data in the body that is posted
+    Creates an account
+    This endpoint will create an account based the data in the body that is posted
     """
-    app.logger.info('Request to create a pet')
+    app.logger.info('Request to create an account')
     check_content_type('application/json')
-    pet = Pet()
-    pet.deserialize(request.get_json())
-    pet.save()
-    message = pet.serialize()
-    location_url = url_for('get_pets', pet_id=pet.id, _external=True)
+    account = account()
+    account.deserialize(request.get_json())
+    account.save()
+    message = account.serialize()
+    location_url = url_for('get_accounts', accountid=account.id, _external=True)
     return make_response(jsonify(message), status.HTTP_201_CREATED,
                          {
                              'Location': location_url
@@ -167,38 +168,38 @@ def create_pets():
 ######################################################################
 # UPDATE AN EXISTING PET
 ######################################################################
-@app.route('/pets/<int:pet_id>', methods=['PUT'])
-def update_pets(pet_id):
+@app.route('/accounts/<int:accountid>', methods=['PUT'])
+def update_accounts(accountid):
     """
-    Update a Pet
+    Update an account
 
-    This endpoint will update a Pet based the body that is posted
+    This endpoint will update an account based the body that is posted
     """
-    app.logger.info('Request to update pet with id: %s', pet_id)
+    app.logger.info('Request to update account with id: %s', accountid)
     check_content_type('application/json')
-    pet = Pet.find(pet_id)
-    if not pet:
-        raise NotFound("Pet with id '{}' was not found.".format(pet_id))
-    pet.deserialize(request.get_json())
-    pet.id = pet_id
-    pet.save()
-    return make_response(jsonify(pet.serialize()), status.HTTP_200_OK)
+    account = account.find(accountid)
+    if not account:
+        raise NotFound("Account with id '{}' was not found.".format(accountid))
+    account.deserialize(request.get_json())
+    account.id = accountid
+    account.save()
+    return make_response(jsonify(account.serialize()), status.HTTP_200_OK)
 
 
 ######################################################################
 # DELETE A PET
 ######################################################################
-@app.route('/pets/<int:pet_id>', methods=['DELETE'])
-def delete_pets(pet_id):
+@app.route('/account/<int:accountid>', methods=['DELETE'])
+def delete_accounts(accountid):
     """
-    Delete a Pet
+    Delete an Account
 
-    This endpoint will delete a Pet based the id specified in the path
+    This endpoint will delete an account based the id specified in the path
     """
-    app.logger.info('Request to delete pet with id: %s', pet_id)
-    pet = Pet.find(pet_id)
-    if pet:
-        pet.delete()
+    app.logger.info('Request to delete account with id: %s', accountid)
+    account = account.find(accountid)
+    if account:
+        account.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
 
 ######################################################################
@@ -208,7 +209,7 @@ def delete_pets(pet_id):
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
-    Pet.init_db(app)
+    account.init_db(app)
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """
@@ -237,3 +238,98 @@ def initialize_logging(log_level=logging.INFO):
         app.logger.setLevel(log_level)
         app.logger.propagate = False
         app.logger.info('Logging handler established')
+
+######################################################################
+# RETRIEVE AN ORDER BASED ON OWNER
+######################################################################
+
+@app.route('/accounts/owners/<str:owner>', methods=['GET'])
+def get_orders_owner(owner):
+    """
+    Retrieve an account
+    This endpoint will return an account based on it's owner
+    """
+    print(owner)
+    app.logger.info('Request for account list based on owner: %s', owner)
+    accounts = account.find_by_owner(owner)
+    if not accounts:
+        raise NotFound("Account with owner '{}' was not found.".format(owner))
+    else:
+        results = [account.serialize() for account in accounts]
+        return make_response(jsonify(results), status.HTTP_200_OK)
+
+######################################################################
+# RETRIEVE AN ORDER BASED ON ACCOUNT ID
+######################################################################
+
+@app.route('/accounts/account_id/<int:account_id>', methods=['GET'])
+def get_orders_account_id(account_id):
+    """
+    Retrieve an account
+    This endpoint will return an account based on it's account id
+    """
+    print(account_id)
+    app.logger.info('Request for account list based on acccount id: %s', account_id)
+    accounts = account.find_by_account_id(account_id)
+    if not accounts:
+        raise NotFound("Account with account id '{}' was not found.".format(account_id))
+    else:
+        results = [account.serialize() for account in accounts]
+        return make_response(jsonify(results), status.HTTP_200_OK)
+
+######################################################################
+# RETRIEVE AN ORDER BASED ON ACCOUNT TYPE
+######################################################################
+
+@app.route('/accounts/account_type/<str:account_type>', methods=['GET'])
+def get_orders_account_type(account_type):
+    """
+    Retrieve an account
+    This endpoint will return an account based on it's account type
+    """
+    print(account_type)
+    app.logger.info('Request for account list based on acccount type: %s', account_type)
+    accounts = account.find_by_account_type(account_type)
+    if not accounts:
+        raise NotFound("Account with account type '{}' was not found.".format(account_type))
+    else:
+        results = [account.serialize() for account in accounts]
+        return make_response(jsonify(results), status.HTTP_200_OK)
+
+######################################################################
+# RETRIEVE AN ORDER BASED ON INSTITUTION ID
+######################################################################
+
+@app.route('/accounts/account_id/<int:institution_id>', methods=['GET'])
+def get_orders_institution_id(institution_id):
+    """
+    Retrieve an account
+    This endpoint will return an account based on it's institution id
+    """
+    print(institution_id)
+    app.logger.info('Request for account list based on institution id: %s', institution_id)
+    accounts = account.find_by_institution_id(institution_id)
+    if not accounts:
+        raise NotFound("Account with institution id '{}' was not found.".format(institution_id))
+    else:
+        results = [account.serialize() for account in accounts]
+        return make_response(jsonify(results), status.HTTP_200_OK)
+
+######################################################################
+# RETRIEVE AN ORDER BASED ON BALANCE
+######################################################################
+
+@app.route('/accounts/balance/<str:balance>', methods=['GET'])
+def get_orders_balance(balance):
+    """
+    Retrieve an account
+    This endpoint will return an account based on it's balance
+    """
+    print(balance)
+    app.logger.info('Request for account list based on balance: %s', balance)
+    accounts = account.find_by_balance(balance)
+    if not accounts:
+        raise NotFound("Account with balance '{}' was not found.".format(balance))
+    else:
+        results = [account.serialize() for account in accounts]
+        return make_response(jsonify(results), status.HTTP_200_OK)
