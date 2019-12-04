@@ -1,7 +1,7 @@
 # Greenprint
 
 ## Paths:
-------
+-- | -- 
 `GET /accounts` | Returns a list all of the accounts
 `GET /accounts/{id}` | Returns the account with a given id number
 `POST /accounts `| creates a new account record in the database
