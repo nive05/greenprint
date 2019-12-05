@@ -84,31 +84,31 @@ $(function () {
 
 
     // ****************************************
-    // Update an Order
+    // Update an account
     // ****************************************
 
     $("#update-btn").click(function () {
 
-        var order_id = $("#order_id").val();
-        var uuid = $("#order_uuid").val();
-        var price = $("#order_price").val();
-        var quantity = $("#order_quantity").val();
-        var customer_id = $("#order_customer_id").val();
-        var product_id = $("#order_product_id").val();
-        var status = $("#order_status").val();
+        var accountid = $("#accountid").val();
+        var owner = $("#owner").val();
+        var account_id = $("#account_id").val();
+        var account_type = $("#account_type").val();
+        var institution_id = $("#institution_id").val();
+        var balance = $("#balance").val();
+       // var status = $("#order_status").val();
 
         var data = {
-          "uuid": uuid,
-          "price": price,
-          "quantity": quantity,
-          "customer_id": customer_id,
-          "product_id": product_id,
-          "status": status
+          "owner": owner,
+          "account_id": account_id,
+          "account_type": account_type,
+          "institution_id": institution_id,
+          "balance": balance,
+         // "status": status
         };
 
         var ajax = $.ajax({
                 type: "PUT",
-                url: "/orders/" + order_id,
+                url: "/accounts/" + accountid,
                 contentType: "application/json",
                 data: JSON.stringify(data)
             })
@@ -125,16 +125,16 @@ $(function () {
     });
 
     // ****************************************
-    // Retrieve an Order
+    // Retrieve an account
     // ****************************************
 
     $("#retrieve-btn").click(function () {
 
-        var order_id = $("#order_id").val();
+        var accountid = $("#accountid").val();
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/orders/" + order_id,
+            url: "/accounts/" + accountid,
             contentType: "application/json",
             data: ''
         })
@@ -153,16 +153,16 @@ $(function () {
     });
 
     // ****************************************
-    // Delete an Order
+    // Delete an account
     // ****************************************
 
     $("#delete-btn").click(function () {
 
-        var order_id = $("#order_id").val();
+        var accountid = $("#accountid").val();
 
         var ajax = $.ajax({
             type: "DELETE",
-            url: "/orders/" + order_id,
+            url: "/accounts/" + accountid,
             contentType: "application/json",
             data: '',
         })
@@ -202,22 +202,34 @@ $(function () {
 
     $("#search-btn").click(function () {
 
-        var customer_id = $("#order_customer_id").val();
-        var product_id = $("#order_product_id").val();
+        var owner = $("#owner").val();
+        var account_id = $("#account_id").val();
+        var account_type = $("#account_type").val();
+        var institution_id = $("#institution_id").val();
+        var balance = $("#balance").val();
         //var status = $("#order_status").val();
 
         var queryString = ""
 
-        if (customer_id) {
-            queryString += '/customers/' + customer_id
+        if (owner) {
+            queryString += '/owners/' + owner
         }
-        else if (product_id) {
-            queryString += '/product/' + product_id
+        else if (account_id) {
+            queryString += '/account_id/' + account_id
+        }
+        else if (account_type) {
+            queryString += '/account_type/' + account_type
+        }
+        else if (institution_id) {
+            queryString += '/institution_id/' + institution_id
+        }
+        else if (balance) {
+            queryString += '/balance/' + balance
         }
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/orders" + queryString,
+            url: "/accounts" + queryString,
             contentType: "application/json",
             data: ''
         })
@@ -234,21 +246,21 @@ $(function () {
             header += '<th style="width:20%">Product ID</th>'
             header += '<th style="width:20%">Status</th></tr>'
             $("#search_results").append(header);
-            var firstOrder = "";
+            var firstAccount = "";
             for(var i = 0; i < res.length; i++) {
                 var order = res[i];
-                var row = "<tr><td>"+order.id+"</td><td>"+order.price+"</td><td>"+order.quantity+"</td><td>"+order.customer_id+"</td><td>"+order.product_id+"</td><td>"+order.status+"</td></tr>";
+                var row = "<tr><td>"+account.id+"</td><td>"+account.owner+"</td><td>"+account.account_id+"</td><td>"+account.account_type+"</td><td>"+account.institution_id+"</td><td>"+account.balance+"</td></tr>";
                 $("#search_results").append(row);
                 if (i == 0) {
-                    firstOrder = order;
+                    firstAccount = account;
                 }
             }
 
             $("#search_results").append('</table>');
 
             // copy the first result to the form
-            if (firstOrder != "") {
-                update_form_data(firstOrder)
+            if (firstAccount != "") {
+                update_form_data(firstAccount)
             }
 
             flash_message("Success")
