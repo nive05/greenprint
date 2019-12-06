@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>TEST</title>
+		<link rel="stylesheet" text="type/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+	</head>
+
+	<body>
+			<div id="header">
+				<center>
+					<img src="img/sync_account.png">
+				</center>
+			</div>
+
+			<div id="content_wrapper">
+				<div id="content_left">
+					<nav>
+
+					</nav>
+				</div>
+				<div id="content_right" class="home">
+							<div class="group">
+								<br><br>
+									<div id="logo">
+										<img src="img/chase-logo-tran.png" id="logo">
+									</div>
+							</div>
+							
+							<form action="linked.html" method="POST">
+							  <div class="group">
+								    <input type="text" required>
+								    <span class="highlight"></span>
+								    <span class="bar"></span>
+							  		<label>Username</label>
+							  </div>
+
+							  <div class="group">  
+								    <input type="password" required>
+								    <span class="highlight"></span>
+								    <span class="bar"></span>
+								    <label>Password</label>
+
+							  </div>
+							  <div class="group"> 
+									<button type="button" id="btnFetch" class="cta">Connect Account</button>
+							  </div>
+							</form>
+				</div>
+			</div>
+
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+			<script type="text/javascript">
+						$(document).ready(function() {
+						    $("#btnFetch").click(function() {
+						      // disable button
+						      $(this).prop("disabled", true);
+						      // add spinner to button
+						      $(this).html(
+						        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Authenticating...`
+						      );
+
+						    });
+						});
+
+					    document.getElementById("btnFetch").onclick = function () {
+					    	setTimeout(
+					    		function(){ 
+					    			location.href = "linked.html";}, 3000);
+					        }
+
+			</script>
+
+	</body>
+</html>
+
