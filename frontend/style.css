@@ -125,12 +125,17 @@ img#logo_small {
 }
 
 .account_group_wrapper {
-	display: inline;
-	width: 10%;
-	height: 100px;
+	width: 70%;
+	height: 80px;
 	background-color: #FFFFFF;
-	box-sizing: border-box;
+  	padding: 10px 50px;
 }
+.cellContainer {
+	width: 25%;
+  	float: left;
+  	padding: 10px 10px;
+}
+
 
 /* form starting stylings ------------------------------- */
 .group        { 
