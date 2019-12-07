@@ -240,11 +240,11 @@ def initialize_logging(log_level=logging.INFO):
         app.logger.info('Logging handler established')
 
 ######################################################################
-# RETRIEVE AN ORDER BASED ON OWNER
+# RETRIEVE AN ACCOUNT BASED ON OWNER
 ######################################################################
 
-@app.route('/accounts/owner/<str:owner>', methods=['GET'])
-def get_orders_owner(owner):
+@app.route('/accounts/owner/<string:owner>', methods=['GET'])
+def get_accounts_owner(owner):
     """
     Retrieve an account
     This endpoint will return an account based on it's owner
@@ -259,11 +259,11 @@ def get_orders_owner(owner):
         return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
-# RETRIEVE AN ORDER BASED ON ACCOUNT ID
+# RETRIEVE AN ACCOUNT BASED ON ACCOUNT ID
 ######################################################################
 
 @app.route('/accounts/account_id/<int:account_id>', methods=['GET'])
-def get_orders_account_id(account_id):
+def get_accounts_account_id(account_id):
     """
     Retrieve an account
     This endpoint will return an account based on it's account id
@@ -278,11 +278,11 @@ def get_orders_account_id(account_id):
         return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
-# RETRIEVE AN ORDER BASED ON ACCOUNT TYPE
+# RETRIEVE AN ACCOUNT BASED ON ACCOUNT TYPE
 ######################################################################
 
-@app.route('/accounts/account_type/<str:account_type>', methods=['GET'])
-def get_orders_account_type(account_type):
+@app.route('/accounts/account_type/<string:account_type>', methods=['GET'])
+def get_accounts_account_type(account_type):
     """
     Retrieve an account
     This endpoint will return an account based on it's account type
@@ -297,11 +297,11 @@ def get_orders_account_type(account_type):
         return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
-# RETRIEVE AN ORDER BASED ON INSTITUTION ID
+# RETRIEVE AN ACCOUNT BASED ON INSTITUTION ID
 ######################################################################
 
 @app.route('/accounts/account_id/<int:institution_id>', methods=['GET'])
-def get_orders_institution_id(institution_id):
+def get_accounts_institution_id(institution_id):
     """
     Retrieve an account
     This endpoint will return an account based on it's institution id
@@ -316,11 +316,11 @@ def get_orders_institution_id(institution_id):
         return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
-# RETRIEVE AN ORDER BASED ON BALANCE
+# RETRIEVE AN ACCOUNT BASED ON BALANCE
 ######################################################################
 
-@app.route('/accounts/balance/<str:balance>', methods=['GET'])
-def get_orders_balance(balance):
+@app.route('/accounts/balance/<float:balance>', methods=['GET'])
+def get_accounts_balance(balance):
     """
     Retrieve an account
     This endpoint will return an account based on it's balance

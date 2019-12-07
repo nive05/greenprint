@@ -7,26 +7,26 @@ $(function () {
     // Updates the form with data from the response
     function update_form_data(res) {
         $("#accountid").val(res.id);
-        $("#owner").val(res.owner);
-        $("#account_id").val(res.account_id);
-        $("#account_type").val(res.account_type);
-        $("#institution_id").val(res.institution_id);
-        $("#balance").val(res.balance);
+        $("#account_uuid").val(res.uuid);
+        $("#account_owner").val(res.owner);
+        $("#account_account_type").val(res.account_type);
+        $("#account_institution_id").val(res.institution_id);
+        $("#account_balance").val(res.balance);
         //if (res.status == false) {
-        //    $("#order_status").val("In Progress");
+        //    $("#account_status").val("In Progress");
         //} {
-       // $("#isHidden").val(res.isHidden);
+        $("#account_status").val(res.status);
         //}
     }
 
     /// Clears all form fields
     function clear_form_data() {
-        $("#accountid").val("");
-        $("#owner").val("");
-        $("#account_id").val("");
-        $("#account_type").val("");
-        $("#institution_id").val("");
-        $("#balance").val("");
+        $("#account_uuid").val("");
+        $("#account_owner").val("");
+        $("#account_account_type").val("");
+        $("#account_institution_id").val("");
+        $("#account_balance").val("");
+        $("#account_status").val("");
     }
 
     // Updates the flash message area
@@ -44,25 +44,25 @@ $(function () {
     }
 
     // ****************************************
-    // Create an Account
+    // Create an account
     // ****************************************
 
     $("#create-btn").click(function () {
 
-        var id = $("#accountid").val();
-        var owner = $("#owner").val();
-        var account_id = $("#account_id").val();
-        var account_type = $("#account_type").val();
-        var institution_id = $("#institution_id").val();
-        var balance = $("#balance").val();
+        var uuid = $("#account_uuid").val();
+        var owner = $("#account_owner").val();
+        var account_type = $("#account_account_type").val();
+        var institution_id = $("#account_institution_id").val();
+        var balance = $("#account_balance").val();
+        var status = $("#account_status").val();
 
         var data = {
-            "accountid": accountid,
+            "uuid": uuid,
             "owner": owner,
-            "account_id": account_id,
             "account_type": account_type,
             "institution_id": institution_id,
-            "balance": balance
+            "balance": balance,
+            "status": status
         };
 
         var ajax = $.ajax({
@@ -89,21 +89,21 @@ $(function () {
 
     $("#update-btn").click(function () {
 
-        var accountid = $("#accountid").val();
-        var owner = $("#owner").val();
-        var account_id = $("#account_id").val();
-        var account_type = $("#account_type").val();
-        var institution_id = $("#institution_id").val();
-        var balance = $("#balance").val();
-       // var status = $("#order_status").val();
+        var accountid = $("#account_id").val();
+        var uuid = $("#account_uuid").val();
+        var owner = $("#account_owner").val();
+        var account_type = $("#account_account_type").val();
+        var institution_id = $("#account_institution_id").val();
+        var balance = $("#account_balance").val();
+        var status = $("#account_status").val();
 
         var data = {
+          "uuid": uuid,
           "owner": owner,
-          "account_id": account_id,
           "account_type": account_type,
           "institution_id": institution_id,
           "balance": balance,
-         // "status": status
+          "status": status
         };
 
         var ajax = $.ajax({
@@ -130,11 +130,11 @@ $(function () {
 
     $("#retrieve-btn").click(function () {
 
-        var accountid = $("#accountid").val();
+        var account_id = $("#account_id").val();
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/accounts/" + accountid,
+            url: "/accounts/" + account_id,
             contentType: "application/json",
             data: ''
         })
@@ -169,7 +169,7 @@ $(function () {
 
         ajax.done(function(res){
             clear_form_data()
-            flash_message("Order has been Deleted!")
+            flash_message("Account has been Deleted!")
         });
 
         ajax.fail(function(res){
@@ -182,7 +182,7 @@ $(function () {
     // ****************************************
 
     $("#clear-btn").click(function () {
-        $("#order_id").val("");
+        $("#accountid").val("");
         clear_form_data()
         //update_order()
     });
@@ -193,34 +193,22 @@ $(function () {
 
     $("#generate-btn").click(function () {
         var uuid = createUUID();
-        $("#order_uuid").val(uuid);
+        $("#accountuuid").val(uuid);
     });
 
     // ****************************************
-    // Search for an Order
+    // Search for an account
     // ****************************************
 
     $("#search-btn").click(function () {
 
-        var owner = $("#owner").val();
-        var account_id = $("#account_id").val();
-        var account_type = $("#account_type").val();
-        var institution_id = $("#institution_id").val();
-        var balance = $("#balance").val();
-        //var status = $("#order_status").val();
+        var institution_id = $("#account_institution_id").val();
+        var balance = $("#account_balance").val();
+        //var status = $("#account_status").val();
 
         var queryString = ""
 
-        if (owner) {
-            queryString += '/owners/' + owner
-        }
-        else if (account_id) {
-            queryString += '/account_id/' + account_id
-        }
-        else if (account_type) {
-            queryString += '/account_type/' + account_type
-        }
-        else if (institution_id) {
+        if (institution_id) {
             queryString += '/institution_id/' + institution_id
         }
         else if (balance) {
@@ -239,17 +227,17 @@ $(function () {
             $("#search_results").empty();
             $("#search_results").append('<table class="table-striped" cellpadding="10">');
             var header = '<tr>'
-            header += '<th style="width:20%">Order ID</th>'
-            header += '<th style="width:10%">Price</th>'
-            header += '<th style="width:15%">Quantity</th>'
-            header += '<th style="width:20%">Customer ID</th>'
-            header += '<th style="width:20%">Product ID</th>'
+            header += '<th style="width:20%">Account ID</th>'
+            header += '<th style="width:10%">Owner</th>'
+            header += '<th style="width:15%">account Type</th>'
+            header += '<th style="width:20%">Institution ID</th>'
+            header += '<th style="width:20%">Balance</th>'
             header += '<th style="width:20%">Status</th></tr>'
             $("#search_results").append(header);
             var firstAccount = "";
             for(var i = 0; i < res.length; i++) {
-                var order = res[i];
-                var row = "<tr><td>"+account.id+"</td><td>"+account.owner+"</td><td>"+account.account_id+"</td><td>"+account.account_type+"</td><td>"+account.institution_id+"</td><td>"+account.balance+"</td></tr>";
+                var account = res[i];
+                var row = "<tr><td>"+account.id+"</td><td>"+account.owner+"</td><td>"+account.account_type+"</td><td>"+account.institution_id+"</td><td>"+account.balance+"</td><td>"+account.status+"</td></tr>";
                 $("#search_results").append(row);
                 if (i == 0) {
                     firstAccount = account;
