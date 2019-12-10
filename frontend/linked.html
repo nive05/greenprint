@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>TEST</title>
+		<title>Networks Final Project</title>
 		<link rel="stylesheet" text="type/css" href="style.css">
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	</head>
@@ -15,48 +15,39 @@
 			</div>
 
 			<div id="content_wrapper">
-				<div id="content_left">
-					<nav>
-
-					</nav>
-				</div>
 				<div id="content_right" class="home">
 							<div class="introText">
 								<br>
 								<p><img src="img/checkmark.png" width="20" height="20"> The <b>2</b> accounts listed below have been successfully connected:</p>
 							</div>	
-
 							<div class="account_group_wrapper">
-								  <div class="cellContainer">
-								    <div style="margin: 5px; background-color: red;">
-								    	<img src="img/chase-logo-tran.png" id="logo_small">
-								  	</div>
-								  </div>
-								  <div class="cellContainer">
-								    <div style="margin: 5px; background-color: orange;">
-
-								  	</div>
-								  </div>
-								  <div class="cellContainer">
-								    <div style="margin: 5px; background-color: green;">
-								    	Chase Checking - 
-								    </div>
-								  </div>
-								  <div class="cellContainer">
-								    <div style="margin: 5px; background-color: blue;">
-											$4000.14
-								    </div>
-								  </div>
+								<table id="accounts">
+								    <tr>
+									    <th class="tableHeader">Institution</th>
+									    <th class="tableHeader">Account Name</th>
+									    <th class="tableHeader">Balance</th>
+									  </tr>
+								  <tr>
+								    <td><img src="img/chase-logo-tran.png" id="logo_small"></td>
+								    <td>Chase Checking</td>
+								    <td>$4000.14</td>
+								  </tr>
+								  <tr><br>
+								  </tr>
+								  <tr>
+								    <td><img src="img/chase-logo-tran.png" id="logo_small"></td>
+								    <td>Chase Sapphire Reserve</td>
+								    <td>$300.00</td>
+								  </tr>
+								  <tr>
+								  </tr>
+								</table>
 							</div>
+							
+							<div id="advice_wrapper">
 									<br>
-								<div class="account_group_wrapper">
-										<img src="img/chase-logo-tran.png" id="logo_small">
-										Chase Sapphire Reserve - $300.00<br><br>
-								</div>
-						
-						    <div class="group"> 
-									<button type="button" id="btnFetch" class="cta">See Advice</button><br>
-									<a href="link.html" class="secondaryLink">Connect Another Account ></a>
+									<button href="advice.html" id="btnFetch" class="cta">See Advice</button><br>
+									<a href="index.html" class="secondaryLink">Connect Another Account ></a>
 							</div>
 				</div>
 
@@ -67,7 +58,23 @@
 			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
 			<script type="text/javascript">
+						$(document).ready(function() {
+						    $("#btnFetch").click(function() {
+						      // disable button
+						      $(this).prop("disabled", true);
+						      // add spinner to button
+						      $(this).html(
+						        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Analyzing...`
+						      );
 
+						    });
+						});
+
+					    document.getElementById("btnFetch").onclick = function () {
+					    	setTimeout(
+					    		function(){ 
+					    			location.href = "advice.html";}, 4000);
+					        }
 
 			</script>
 
