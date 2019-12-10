@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order Demo RESTful Service</title>
+    <title>Account Demo RESTful Service</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
   <body>
     <div class="container">
         <div class="page-header">
-            <h1>Order Demo REST API Service</h1>
+            <h1>Account Demo REST API Service</h1>
         </div>
 
         <!-- Flash Message -->
@@ -23,13 +23,13 @@
         </div>
 
         <div class="col-md-12" id="form_data">
-          Create, Retrieve, Update, and Delete an Order:
+          Create, Retrieve, Update, and Delete an Account:
           <div class="well">
             <div class="form-horizontal">
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_id">Order ID:</label>
+                <label class="control-label col-sm-2" for="accountid">Account ID:</label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" id="order_id" placeholder="Enter ID of Order">
+                  <input type="text" class="form-control" id="accountid" placeholder="Enter ID of Account">
                 </div>
                 <div class="col-sm-4">
                   <button type="submit" class="btn btn-primary" id="retrieve-btn">Retrieve</button>
@@ -40,42 +40,42 @@
 
             <div class="form-horizontal">
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_uuid">Order uuid:</label>
+                <label class="control-label col-sm-2" for="account_uuid">Account uuid:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="order_uuid" placeholder="Generate uuid of Order">
+                  <input type="text" class="form-control" id="account_uuid" placeholder="Generate uuid of Account">
                 </div>
                 <div class="col-sm-2">
                   <button type="submit" class="btn btn-primary" id="generate-btn">Generate</button>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_price">Price:</label>
+                <label class="control-label col-sm-2" for="account_owner">Owner:</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="order_price" placeholder="Enter price for Order">
+                  <input type="text" class="form-control" id="account_owner" placeholder="Enter owner for account">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_quantity">Quantity:</label>
+                <label class="control-label col-sm-2" for="account_account_type">Account Type:</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="order_quantity" placeholder="Enter quantity for Order">
+                  <input type="text" class="form-control" id="account_account_type" placeholder="Enter account type for Account">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_customer_id">Customer ID:</label>
+                <label class="control-label col-sm-2" for="account_institution_id">Institution ID:</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="order_customer_id" placeholder="Enter customer id for Order">
+                  <input type="text" class="form-control" id="account_institution_id" placeholder="Enter institution id for Account">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_product_id">Product ID:</label>
+                <label class="control-label col-sm-2" for="account_balance">Balance:</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="order_product_id" placeholder="Enter product id for Order">
+                  <input type="text" class="form-control" id="account_balance" placeholder="Enter balance for Account">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="order_status">Status:</label>
+                <label class="control-label col-sm-2" for="account_status">Status:</label>
                 <div class="col-sm-10">
-                  <select class="form-control" id="order_status">
+                  <select class="form-control" id="account_status">
                       <option value="In Progress" selected>In Progress</option>
                       <option value="Delivered">Delivered</option>
                       <option value="Cancelled">Cancelled</option>
@@ -98,11 +98,11 @@
           <table class="table-striped">
             <thead>
             <tr>
-                <th class="col-md-3">Order ID</th>
-                <th class="col-md-2">Price</th>
-                <th class="col-md-2">Quantity</th>
-                <th class="col-md-3">Customer ID</th>
-                <th class="col-md-3">Product ID</th>
+                <th class="col-md-3">Account ID</th>
+                <th class="col-md-2">Owner</th>
+                <th class="col-md-2">account_type</th>
+                <th class="col-md-3">Institution ID</th>
+                <th class="col-md-3">Balance</th>
                 <th class="col-md-2">Status</th>
             </tr>
             </thead>

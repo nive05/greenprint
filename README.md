@@ -32,14 +32,12 @@ Then all you have to do is clone this repo and invoke vagrant:
     vagrant ssh
     cd /vagrant
     FLASK_APP=service:app flask run -h 0.0.0.0
-    honcho start 2>&1 > /dev/null &
+    honcho start
 ```
 
 """
 
-Test cases can be run with:
-  nosetests
-"""
+Listetning on localhost:5000
 
 When you are done, you can exit and shut down the vm with:
 

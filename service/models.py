@@ -17,11 +17,6 @@ institution_id (int) - will map institution id to a unique institution name usin
 balance (float) - current balance in account
 isHidden (boolean) - True for accounts that are active
 
-
-name (string) - the name of the pet
-category (string) - the category the pet belongs to (i.e., dog, cat)
-available (boolean) - True for pets that are available for adoption
-
 """
 import logging
 from flask_sqlalchemy import SQLAlchemy
