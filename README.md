@@ -38,7 +38,7 @@ Then all you have to do is clone this repo and invoke vagrant:
 
 """
 
-Listetning on localhost:5000
+Listening on localhost:5000
 
 When you are done, you can exit and shut down the vm with:
 
