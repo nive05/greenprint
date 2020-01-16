@@ -26,11 +26,12 @@ Download [Vagrant](https://www.vagrantup.com/)
 Then all you have to do is clone this repo and invoke vagrant:
 
 ```bash
-    git clone https://github.com/nyu-devops/lab-flask-rest.git
-    cd lab-flask-rest
+    git clone https://github.com/nive05/greenprint
+    cd greenprint
     vagrant up
     vagrant ssh
     cd /vagrant
+    nosetests
     FLASK_APP=service:app flask run -h 0.0.0.0
     honcho start
 ```
