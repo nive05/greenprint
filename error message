@@ -1,0 +1,305 @@
+======================================================================
+ERROR: Create an account and add it to the database
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 57, in test_add_an_account
+    accounts = account.all()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+faker.factory: DEBUG: Not in REPL -> leaving logger event level as is.
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Create an account and assert that it exists
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 46, in test_create_an_account
+    account = account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500)
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Delete an account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 85, in test_delete_an_account
+    account = account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500)
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Test deserialization of an account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 113, in test_deserialize_an_account
+    account = account()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Test deserialization of bad data
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 126, in test_deserialize_bad_data
+    account = account()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Find an account by ID
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 131, in test_find_account
+    account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500).save()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Find an account by owner
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 145, in test_find_account_by_owner
+    account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500).save()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Find or return 404 found
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 160, in test_find_or_404_found
+    account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500).save()
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Find or return 404 NOT found
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 174, in test_find_or_404_not_found
+    self.assertRaises(NotFound, account.find_or_404, 0)
+  File "/usr/lib/python3.6/unittest/case.py", line 733, in assertRaises
+    return context.handle('assertRaises', args, kwargs)
+  File "/usr/lib/python3.6/unittest/case.py", line 178, in handle
+    callable_obj(*args, **kwargs)
+  File "/vagrant/service/models.py", line 125, in find_or_404
+    return cls.query.get_or_404(accountid)
+  File "/usr/local/lib/python3.6/dist-packages/flask_sqlalchemy/__init__.py", line 422, in get_or_404
+    rv = self.get(ident)
+  File "/usr/local/lib/python3.6/dist-packages/sqlalchemy/orm/query.py", line 982, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+  File "/usr/local/lib/python3.6/dist-packages/sqlalchemy/orm/query.py", line 1055, in _get_impl
+    % ",".join("'%s'" % c for c in mapper.primary_key)
+sqlalchemy.exc.InvalidRequestError: Incorrect number of values in identifier to formulate primary key for query.get(); primary key columns are 'account.id','account.account_id','account.institution_id','account.balance'
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+flask.app: INFO: Processing lookup or 404 for id 0 ...
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Test serialization of an account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 94, in test_serialize_an_account
+    account = account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500)
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+ERROR: Update an account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_accounts.py", line 70, in test_update_an_account
+    account = account( owner = "John Doe", account_id = 1, account_type = "credit card", institution_id = 4, balance = 500)
+UnboundLocalError: local variable 'account' referenced before assignment
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: cancel an existing account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 161, in test_cancel_account
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+AssertionError: 500 != 201
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=0
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Failure test for cancelling an existing account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 180, in test_cancel_account_failure
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+AssertionError: 500 != 201
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=1
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Delete a account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 144, in test_delete_account
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=2
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get a single account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 85, in test_get_account
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=3
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get an account linked to account id
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 94, in test_get_account_by_account_id
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=4
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get an account linked to account type
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 197, in test_get_account_by_account_type
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=5
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get an account linked to balance
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 217, in test_get_account_by_balance
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=6
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get an account linked to institution id
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 207, in test_get_account_by_institution_id
+    test_account = self._create_accounts(1)[0]
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=7
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get a list of accounts
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 77, in test_get_account_list
+    self._create_accounts(5)
+  File "/vagrant/tests/test_service.py", line 62, in _create_accounts
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create a test account')
+AssertionError: 500 != 201 : Could not create a test account
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=8
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Get an account thats not found
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 104, in test_get_account_not_found
+    self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+AssertionError: 405 != 404
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Update an existing account
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 113, in test_update_account
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+AssertionError: 500 != 201
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=9
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: Update an existing account (failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/vagrant/tests/test_service.py", line 132, in test_update_account_failure
+    self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+AssertionError: 500 != 201
+-------------------- >> begin captured logging << --------------------
+flask.app: INFO: Initializing database
+factory.generate: DEBUG: Sequence: Computing next value of <function AccountFactory.<lambda> at 0x7fb10bfc32f0> for seq=10
+--------------------- >> end captured logging << ---------------------
+
+Name                  Stmts   Miss  Cover
+-----------------------------------------
+service/__init__.py      22      3    86%
+service/models.py        76     36    53%
+service/service.py      147     91    38%
+-----------------------------------------
+TOTAL                   245    130    47%
+----------------------------------------------------------------------
+Ran 25 tests in 2.097s
+
+FAILED (errors=11, failures=12)
+
